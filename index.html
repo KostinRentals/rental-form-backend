@@ -358,6 +358,7 @@
         async function submitForm() {
             const form = document.getElementById('application-form');
             event.preventDefault();
+            console.log('submitForm called');
             const formData = new FormData(form);
             const data = {};
             formData.forEach((value, key) => {
