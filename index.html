@@ -368,9 +368,8 @@
 
             showModal('Submitting...', 'Please wait while your application is submitted.');
 
-            // This is a placeholder for your email service endpoint
-            // Update this to your backend endpoint
-            const emailServiceEndpoint = 'http://localhost:3001/submit';
+            // Use the live Render backend endpoint
+            const emailServiceEndpoint = 'https://rental-form-backend-gy0f.onrender.com/submit';
 
             try {
                 const response = await fetch(emailServiceEndpoint, {
