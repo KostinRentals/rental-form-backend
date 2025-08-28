@@ -16,11 +16,11 @@
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
+
         .form-container {
-            max-width: 100vw;
-            width: 100%;
-            margin: 1rem auto;
-            padding: 1rem;
+            max-width: 8.5in;
+            margin: 2rem auto;
+            padding: 2rem;
             background-color: #ffffff;
             border-radius: 1.5rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -28,58 +28,57 @@
             box-sizing: border-box;
             display: block;
         }
-        @media (min-width: 640px) {
-            .form-container {
-                max-width: 700px;
-                padding: 2rem;
-            }
-        }
-        @media (min-width: 1024px) {
-            .form-container {
-                max-width: 8.5in;
-            }
-        }
+
         h1,
         h2 {
             text-align: center;
             color: #1f2937;
         }
+
         h1 {
             border-bottom: 2px solid #e5e7eb;
             padding-bottom: 1rem;
             margin-bottom: 1.5rem;
         }
+
         h2 {
             border-bottom: 1px solid #f3f4f6;
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
             font-weight: 600;
         }
+
         .form-section {
             margin-bottom: 2rem;
         }
+
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(1, 1fr);
             gap: 1.5rem;
         }
+
         @media (min-width: 640px) {
-            .grid-container.sm\:grid-cols-2 {
+            .sm\:grid-cols-2 {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .form-group.sm\:col-span-2 {
+
+            .sm\:col-span-2 {
                 grid-column: span 2;
             }
         }
+
         .form-group {
             margin-bottom: 1rem;
         }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
             color: #4b5563;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -97,6 +96,7 @@
             outline: none;
             box-sizing: border-box;
         }
+
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="tel"]:focus,
@@ -105,23 +105,16 @@
             border-color: #4f46e5;
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
+
         .signature-block {
             margin-top: 30px;
         }
+
         .signature-line {
             display: block;
             border-bottom: 1px dashed #4b5563;
             width: 100%;
             margin-top: 50px;
-        }
-        /* Responsive button spacing */
-        .flex.space-x-4 > * {
-            margin-bottom: 0.5rem;
-        }
-        @media (min-width: 640px) {
-            .flex.space-x-4 > * {
-                margin-bottom: 0;
-            }
         }
     </style>
 </head>
@@ -156,7 +149,7 @@
                     <input type="text" id="current-address" name="current-address">
                 </div>
                 <div class="form-group sm:col-span-2">
-                    <label for="current-address-length">Length at Current Address:</label>
+                    <label for="current-address-length">Length of Residency at Current Address:</label>
                     <input type="text" id="current-address-length" name="current-address-length">
                 </div>
                 <div class="form-group sm:col-span-2">
@@ -298,15 +291,17 @@
                 </div>
             </div>
         </div>
+        <!-- The submit button is now inside the form to prevent redundancy -->
+        <div class="flex justify-center space-x-4 mt-6 mb-8">
+            <button onclick="downloadPDF()" class="px-8 py-3 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-2 transition-all" type="button">
+                Download as PDF
+            </button>
+            <button onclick="submitForm()" class="px-8 py-3 bg-green-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-offset-2 transition-all" type="button">
+                Submit Application
+            </button>
+        </div>
     </form>
 
-    <!-- Submit Buttons -->
-    <div class="flex justify-center space-x-4 mt-6 mb-8">
-        <button onclick="downloadPDF()" class="px-8 py-3 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
-            Download as PDF
-        </button>
-    </div>
-    
     <!-- Modal for Success/Error Messages -->
     <div id="messageModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 hidden flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md transform transition-all scale-95 duration-300">
@@ -354,21 +349,20 @@
         // Function to submit the form data
         async function submitForm() {
             const form = document.getElementById('application-form');
-            event.preventDefault();
-            console.log('submitForm called');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
             const formData = new FormData(form);
             const data = {};
             formData.forEach((value, key) => {
                 data[key] = value;
             });
             
-            // Note: The recipient emails are now hardcoded in the backend service.
-            // You will need to configure your server to receive this data and send the email to the correct recipients.
-
             showModal('Submitting...', 'Please wait while your application is submitted.');
 
-            // Use the live Render backend endpoint
-            const emailServiceEndpoint = 'https://rental-form-backend-gy0f.onrender.com/submit';
+            const emailServiceEndpoint = 'YOUR_EMAIL_SERVICE_ENDPOINT_HERE';
 
             try {
                 const response = await fetch(emailServiceEndpoint, {
@@ -384,8 +378,7 @@
 
                 if (response.ok) {
                     showModal('Success!', 'Your application has been submitted successfully.');
-                    // You can clear the form here if needed
-                    // form.reset();
+                    form.reset();
                 } else {
                     const errorText = await response.text();
                     showModal('Submission Failed', `Something went wrong. Please try again. Error: ${errorText}`);
