@@ -127,7 +127,7 @@
 </head>
 
 <body>
-    <div class="form-container" id="application-form">
+    <form class="form-container" id="application-form">
         <h1 class="text-3xl font-bold">Tenant Application Form</h1>
         <p class="text-center text-gray-500 mb-6">Please complete this form in its entirety. All information is confidential.</p>
 
@@ -298,7 +298,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <!-- Submit Buttons -->
     <div class="flex justify-center space-x-4 mt-6 mb-8">
@@ -357,6 +357,7 @@
         // Function to submit the form data
         async function submitForm() {
             const form = document.getElementById('application-form');
+            event.preventDefault();
             const formData = new FormData(form);
             const data = {};
             formData.forEach((value, key) => {
