@@ -6,7 +6,9 @@ import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://kostinrentals.github.io'
+}));
 app.use(express.json());
 
 // Configure your email transport (use your real credentials)
