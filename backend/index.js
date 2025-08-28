@@ -7,7 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: 'https://kostinrentals.github.io'
+  origin: 'https://kostinrentals.github.io',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
 }));
 app.use(express.json());
 
