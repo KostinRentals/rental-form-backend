@@ -429,9 +429,17 @@
         }
     </script>
 </body>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('application-form').addEventListener('submit', submitForm);
-    });
-    </script>
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded fired');
+    var form = document.getElementById('application-form');
+    console.log('form:', form);
+    if (form) {
+        form.addEventListener('submit', submitForm);
+    } else {
+        console.error('Form with id application-form not found');
+    }
+});
+</script>
 </html>
